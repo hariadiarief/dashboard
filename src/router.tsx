@@ -1,37 +1,37 @@
-import { BrowserRouter, Routes, Route } from "react-router";
+import { BrowserRouter, Route, Routes } from 'react-router'
 
-import Home from "./pages/home";
-import Register from "./pages/authentication/register";
-import Login from "./pages/authentication/login";
-import { useAuth } from "./context/auth/authContext";
+import { useAuth } from './context/auth/authContext'
+import Login from './pages/authentication/login'
+import Register from './pages/authentication/register'
+import Home from './pages/home'
 
 const privateRoutes = [
   {
-    path: "/",
-    element: <Home />,
-  },
-];
+    path: '/',
+    element: <Home />
+  }
+]
 
 const publicRoutes = [
   {
-    path: "/",
-    element: <Login />,
+    path: '/',
+    element: <Login />
   },
   {
-    path: "/login",
-    element: <Login />,
+    path: '/login',
+    element: <Login />
   },
   {
-    path: "/register",
-    element: <Register />,
-  },
-];
+    path: '/register',
+    element: <Register />
+  }
+]
 
 export default function RoutesApp() {
-  const { state: authState, isLoading } = useAuth();
+  const { state: authState, isLoading } = useAuth()
 
   if (isLoading) {
-    return <div>Loading...</div>;
+    return <div>Loading...</div>
   } else {
     if (authState.isAuthenticated) {
       return (
@@ -42,7 +42,7 @@ export default function RoutesApp() {
             ))}
           </Routes>
         </BrowserRouter>
-      );
+      )
     } else {
       return (
         <BrowserRouter>
@@ -52,7 +52,7 @@ export default function RoutesApp() {
             ))}
           </Routes>
         </BrowserRouter>
-      );
+      )
     }
   }
 }

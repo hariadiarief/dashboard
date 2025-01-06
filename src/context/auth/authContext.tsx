@@ -1,4 +1,4 @@
-"use client";
+'use client'
 
 import React, {
   ReactNode,
@@ -6,51 +6,51 @@ import React, {
   useContext,
   useEffect,
   useReducer,
-  useState,
-} from "react";
-import { initialState, reducer } from "./authReducer";
-import { IActionAuth, IStateAuth } from "./authTypes";
+  useState
+} from 'react'
+import { initialState, reducer } from './authReducer'
+import { IActionAuth, IStateAuth } from './authTypes'
 
 interface ContextProps {
-  isLoading: boolean;
-  state: IStateAuth;
-  dispatch: React.Dispatch<IActionAuth>;
+  isLoading: boolean
+  state: IStateAuth
+  dispatch: React.Dispatch<IActionAuth>
 }
 
-const AuthContext = createContext<ContextProps | undefined>(undefined);
+const AuthContext = createContext<ContextProps | undefined>(undefined)
 
 export const AuthProvider = ({ children }: { children: ReactNode }) => {
-  const [isLoading, setisLoading] = useState(true);
-  const [state, dispatch] = useReducer(reducer, initialState);
+  const [isLoading, setisLoading] = useState(true)
+  const [state, dispatch] = useReducer(reducer, initialState)
 
   useEffect(() => {
-    const auth = localStorage.getItem("token") || "";
+    const auth = localStorage.getItem('token') || ''
 
     const payload = {
-      token: auth,
-    };
+      token: auth
+    }
 
-    console.log({ payload });
+    console.log({ payload })
     dispatch({
-      type: "auth-check",
-      payload,
-    });
+      type: 'auth-check',
+      payload
+    })
 
-    setisLoading(false);
-  }, []);
+    setisLoading(false)
+  }, [])
 
   return (
     <AuthContext.Provider value={{ isLoading, state, dispatch }}>
       {children}
     </AuthContext.Provider>
-  );
-};
+  )
+}
 
 export const useAuth = (): ContextProps => {
-  const context = useContext(AuthContext);
+  const context = useContext(AuthContext)
   if (!context) {
-    throw new Error("useAuth must be used within a AuthProvider");
+    throw new Error('useAuth must be used within a AuthProvider')
   }
 
-  return context;
-};
+  return context
+}

@@ -1,32 +1,32 @@
-import { Button } from "@/components/ui/button";
-import axios from "axios";
-import { useEffect, useState } from "react";
-import { Link } from "react-router";
+import { Button } from '@/components/ui/button'
+import axios from 'axios'
+import { useEffect, useState } from 'react'
+import { Link } from 'react-router'
 
 interface IPost {
-  id: string | number;
-  title: string;
+  id: string | number
+  title: string
 }
 
 export default function Home() {
-  const [posts, setPost] = useState<IPost[]>();
-  const [query, setQuery] = useState("");
+  const [posts, setPost] = useState<IPost[]>()
+  const [query, setQuery] = useState('')
 
   useEffect(() => {
     axios
-      .get("https://jsonplaceholder.typicode.com/posts?_limit=10s")
-      .then((res) => {
-        setPost(res.data);
-      });
-  }, []);
+      .get('https://jsonplaceholder.typicode.com/posts?_limit=10s')
+      .then(res => {
+        setPost(res.data)
+      })
+  }, [])
 
   return (
     <div>
       <h1>Home</h1>
       <input
-        type="text"
+        type='text'
         value={query}
-        onChange={(e) => setQuery(e.target.value)}
+        onChange={e => setQuery(e.target.value)}
       />
 
       {query && <div>filter : {query}</div>}
@@ -44,5 +44,5 @@ export default function Home() {
         ))
       )}
     </div>
-  );
+  )
 }
