@@ -1,6 +1,6 @@
 export interface IStateAuth {
   isAuthenticated: boolean
-  token: string
+  token: string | null
 }
 export type IActionAuth = IActionLogin | IActionLogout
 

@@ -1,31 +1,45 @@
-import { BrowserRouter, Route, Routes } from 'react-router'
+import { BrowserRouter, useRoutes } from 'react-router'
 
 import { useAuth } from './context/auth/authContext'
-import Login from './pages/authentication/login'
-import Register from './pages/authentication/register'
-import Home from './pages/home'
+import Article from './features/article'
+import Login from './features/authentication/login'
+import Register from './features/authentication/register'
+import Dashboard from './features/dashboard'
+import Layout from './features/layout'
 
-const privateRoutes = [
-  {
-    path: '/',
-    element: <Home />
-  }
-]
+const PrivateRoutes = () =>
+  useRoutes([
+    {
+      path: '/',
+      element: <Layout />,
+      children: [
+        {
+          index: true,
+          element: <Dashboard />
+        },
+        {
+          path: '/article',
+          element: <Article />
+        }
+      ]
+    }
+  ])
 
-const publicRoutes = [
-  {
-    path: '/',
-    element: <Login />
-  },
-  {
-    path: '/login',
-    element: <Login />
-  },
-  {
-    path: '/register',
-    element: <Register />
-  }
-]
+const PublicRoutes = () =>
+  useRoutes([
+    {
+      path: '/',
+      element: <Login />
+    },
+    {
+      path: '/login',
+      element: <Login />
+    },
+    {
+      path: '/register',
+      element: <Register />
+    }
+  ])
 
 export default function RoutesApp() {
   const { state: authState, isLoading } = useAuth()
@@ -36,21 +50,13 @@ export default function RoutesApp() {
     if (authState.isAuthenticated) {
       return (
         <BrowserRouter>
-          <Routes>
-            {privateRoutes.map((route, index) => (
-              <Route path={route.path} element={route.element} key={index} />
-            ))}
-          </Routes>
+          <PrivateRoutes />
         </BrowserRouter>
       )
     } else {
       return (
         <BrowserRouter>
-          <Routes>
-            {publicRoutes.map((route, index) => (
-              <Route path={route.path} element={route.element} key={index} />
-            ))}
-          </Routes>
+          <PublicRoutes />
         </BrowserRouter>
       )
     }

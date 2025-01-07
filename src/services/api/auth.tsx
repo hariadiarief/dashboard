@@ -1,3 +1,4 @@
+import { AxiosResponse } from 'axios'
 import { API } from './api'
 
 export interface ILoginPayload {
@@ -6,7 +7,11 @@ export interface ILoginPayload {
 }
 export interface ILoginResponse {
   jwt: string
-  user: any
+  user: {
+    id: number
+    username: string
+    email: string
+  }
 }
 
 export interface IRegisterPayload {
@@ -21,6 +26,8 @@ export const login = async (
   return await API.post('/api/auth/local', payload)
 }
 
-export const register = async (payload: IRegisterPayload): Promise<any> => {
+export const register = async (
+  payload: IRegisterPayload
+): Promise<AxiosResponse> => {
   return await API.post('/api/auth/local/register', payload)
 }

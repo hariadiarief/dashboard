@@ -2,7 +2,7 @@ import { IActionAuth, IStateAuth } from './authTypes'
 
 export const initialState: IStateAuth = {
   isAuthenticated: false,
-  token: ''
+  token: null
 }
 
 export const reducer = (state: IStateAuth, action: IActionAuth): IStateAuth => {

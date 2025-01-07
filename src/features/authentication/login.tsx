@@ -10,12 +10,16 @@ import { Link, useNavigate } from 'react-router'
 
 export default function Login() {
   const { dispatch } = useAuth()
-  let navigate = useNavigate()
+  const navigate = useNavigate()
 
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
 
-  const loginMutation = useMutation<ILoginResponse, Error, ILoginPayload>({
+  const { mutate: loginMutation, isPending } = useMutation<
+    ILoginResponse,
+    Error,
+    ILoginPayload
+  >({
     mutationFn: login,
     onSuccess: data => {
       localStorage.setItem('token', data.jwt)
@@ -29,7 +33,7 @@ export default function Login() {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
-    loginMutation.mutate({
+    loginMutation({
       identifier: email,
       password
     })
@@ -65,7 +69,7 @@ export default function Login() {
           </CardContent>
           <CardFooter className='flex flex-col space-y-4'>
             <Button type='submit' className='w-full'>
-              Login
+              {isPending ? 'Loading...' : 'Login'}
             </Button>
             <p className='text-center text-sm'>
               Don't have an account?{' '}

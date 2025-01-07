@@ -1,11 +1,10 @@
-'use client'
-
 import { Button } from '@/components/ui/button'
 import { Card, CardContent, CardFooter } from '@/components/ui/card'
 import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
 import { IRegisterPayload, register } from '@/services/api/auth'
 import { useMutation } from '@tanstack/react-query'
+import { AxiosResponse } from 'axios'
 import { useState } from 'react'
 import { Link, useNavigate } from 'react-router'
 
@@ -15,7 +14,7 @@ export default function Register() {
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
 
-  const registerMutation = useMutation<any, Error, IRegisterPayload>({
+  const registerMutation = useMutation<AxiosResponse, Error, IRegisterPayload>({
     mutationFn: register,
     onSuccess: () => {
       navigate('/login')
