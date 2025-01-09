@@ -2,6 +2,8 @@ import { BrowserRouter, useRoutes } from 'react-router'
 
 import { useAuth } from './context/auth/authContext'
 import Article from './features/article'
+import CreateArticle from './features/article/create'
+import DetailArticle from './features/article/detail'
 import EditArticle from './features/article/edit'
 import Login from './features/authentication/login'
 import Register from './features/authentication/register'
@@ -21,6 +23,14 @@ const PrivateRoutes = () =>
         {
           path: '/article',
           element: <Article />
+        },
+        {
+          path: '/article/:id',
+          element: <DetailArticle />
+        },
+        {
+          path: '/article/create',
+          element: <CreateArticle />
         },
         {
           path: '/article/edit/:id',

@@ -1,6 +1,3 @@
-import { editArticle, getArticlebyID } from '@/services/api/article'
-import { useMutation, useQuery } from '@tanstack/react-query'
-import { useParams } from 'react-router'
 import { z } from 'zod'
 
 import { Button } from '@/components/ui/button'
@@ -14,11 +11,11 @@ import {
 } from '@/components/ui/form'
 import { Input } from '@/components/ui/input'
 
+import { createArticle } from '@/services/api/article'
 import { zodResolver } from '@hookform/resolvers/zod'
+import { useMutation } from '@tanstack/react-query'
 import { useForm } from 'react-hook-form'
-
-import { toast } from '@/hooks/use-toast'
-import { useEffect } from 'react'
+import { useNavigate } from 'react-router'
 
 const FormSchema = z.object({
   title: z.string().min(2, {
@@ -30,25 +27,13 @@ const FormSchema = z.object({
   cover_image_url: z.string().url()
 })
 
-export default function EditArticle() {
-  const { id } = useParams()
+export default function CreateArticle() {
+  const navigate = useNavigate()
 
-  const { data } = useQuery({
-    queryKey: ['getArticlebyID'],
-    queryFn: () => getArticlebyID(id)
-  })
-
-  const editArticleMutation = useMutation({
-    mutationFn: editArticle,
-    onSuccess: () => {
-      toast({
-        title: 'You submitted the following values:',
-        description: (
-          <pre className='mt-2 w-[340px] rounded-md bg-slate-950 p-4'>
-            <code className='text-white'>{JSON.stringify(data, null, 2)}</code>
-          </pre>
-        )
-      })
+  const createArticleMutation = useMutation({
+    mutationFn: createArticle,
+    onSuccess: response => {
+      navigate(`/article/${response.data.documentId}`)
     },
     onError: error => {
       console.error('Register gagal:', error)
@@ -58,20 +43,14 @@ export default function EditArticle() {
   const form = useForm<z.infer<typeof FormSchema>>({
     resolver: zodResolver(FormSchema),
     defaultValues: {
-      title: data?.data?.title || '',
-      description: data?.data?.description || '',
-      cover_image_url: data?.data?.cover_image_url || ''
+      title: '',
+      description: '',
+      cover_image_url: ''
     }
   })
 
-  useEffect(() => {
-    if (data?.data) {
-      form.reset(data?.data)
-    }
-  }, [data, form])
-
   function onSubmit(data: z.infer<typeof FormSchema>) {
-    if (id) editArticleMutation.mutate({ id, params: data })
+    createArticleMutation.mutate(data)
   }
 
   return (
@@ -119,7 +98,7 @@ export default function EditArticle() {
             </FormItem>
           )}
         />
-        <Button type='submit'>Submit</Button>
+        <Button type='submit'>Create</Button>
       </form>
     </Form>
   )

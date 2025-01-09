@@ -14,6 +14,12 @@ export interface IGetArticleParams {
   populate?: string | number
 }
 
+export interface IPostArticleParam {
+  title: string
+  description: string
+  cover_image_url: string
+}
+
 export interface IMetaPagination {
   page: number
   pageSize: number
@@ -31,6 +37,7 @@ export interface IArticle {
   updatedAt: string
   publishedAt: string
 }
+
 export interface IComment {
   content: string
   createdAt: string
@@ -38,6 +45,10 @@ export interface IComment {
   id: number
   publishedAt: string
   updatedAt: string
+  user: {
+    username: string
+    email: string
+  }
 }
 
 export interface IGetArticleResponse {
@@ -68,4 +79,28 @@ export const getArticlebyID = async (
   documentId?: string
 ): Promise<AxiosResponse> => {
   return await API.get(`/api/articles/${documentId}`)
+}
+
+export const createArticle = async (
+  params: IPostArticleParam
+): Promise<AxiosResponse> => {
+  return await API.post(`/api/articles`, {
+    data: {
+      ...params
+    }
+  })
+}
+
+export const editArticle = async ({
+  id,
+  params
+}: {
+  id: number | string
+  params: IPostArticleParam
+}): Promise<AxiosResponse> => {
+  return await API.put(`/api/articles/${id}`, {
+    data: {
+      ...params
+    }
+  })
 }

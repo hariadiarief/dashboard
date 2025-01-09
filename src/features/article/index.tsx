@@ -10,12 +10,17 @@ import {
 import { getArticles } from '@/services/api/article'
 import { useInfiniteQuery } from '@tanstack/react-query'
 import { format } from 'date-fns'
-import { MessageSquareQuoteIcon, TimerIcon } from 'lucide-react'
+import {
+  ChevronRightIcon,
+  MessageSquareQuoteIcon,
+  PlusIcon,
+  TimerIcon
+} from 'lucide-react'
 import { useEffect, useMemo } from 'react'
 import { Link } from 'react-router'
 
 export default function Article() {
-  const { data, fetchNextPage, hasNextPage, isFetchingNextPage } =
+  const { data, fetchNextPage, hasNextPage, isFetchingNextPage, isPending } =
     useInfiniteQuery({
       queryKey: ['getArticles'],
       queryFn: getArticles,
@@ -41,19 +46,30 @@ export default function Article() {
   }, [data])
 
   useEffect(() => {
-    console.log({ data, data2: data?.pages, articles })
-  }, [data, articles])
+    console.log({ articles, data })
+  }, [articles, data])
 
-  if (Array.isArray(articles) && articles.length > 0) {
-    return (
-      <>
-        <div className='grid grid-cols-[repeat(auto-fill,_minmax(288px,_1fr))] gap-4'>
-          {articles.map((article, index) => (
-            <Link
-              to={`/article/edit/${article.documentId}`}
-              className='h-full w-full'
-              key={article.documentId + index}
-            >
+  if (isPending) {
+    return <div>Loading...</div>
+  }
+
+  return (
+    <>
+      <div className='mb-4 flex justify-end'>
+        <Link to='/article/create'>
+          <Button>
+            Create Article
+            <PlusIcon className='ml-2' />
+          </Button>
+        </Link>
+      </div>
+
+      {articles.length === 0 ? (
+        <div>no data</div>
+      ) : (
+        <>
+          <div className='grid grid-cols-[repeat(auto-fill,_minmax(288px,_1fr))] gap-4'>
+            {articles.map((article, index) => (
               <Card className='flex h-full w-full flex-col'>
                 <CardHeader>
                   <CardTitle>{article.title}</CardTitle>
@@ -67,8 +83,8 @@ export default function Article() {
                   />
                 </CardContent>
                 <CardFooter>
-                  <div className='flex flex-col space-y-1'>
-                    <div className='flex items-center'>
+                  <div className='flex w-full flex-col space-y-1'>
+                    <div className='flex items-center px-4'>
                       <TimerIcon className='mr-2 w-[14px] text-muted-foreground' />
                       {article.updatedAt ? (
                         <span className='text-sm text-muted-foreground'>
@@ -80,31 +96,44 @@ export default function Article() {
                         </span>
                       )}
                     </div>
-                    {article.comments?.length > 0 && (
-                      <div className='flex items-center'>
-                        <MessageSquareQuoteIcon className='mr-2 w-[14px] text-muted-foreground' />
-                        <span className='text-sm text-muted-foreground'>{`${article.comments.length} comments`}</span>
-                      </div>
+                    {!article.comments?.length ? null : (
+                      <Link
+                        to={`/article/${article.documentId}`}
+                        className='w-full'
+                        key={article.documentId + index}
+                        state={article?.comments || []}
+                      >
+                        <Button className='w-full' variant='ghost'>
+                          <div className='mr-auto'>
+                            {article.comments?.length > 0 && (
+                              <div className='flex items-center'>
+                                <MessageSquareQuoteIcon className='mr-2 w-[14px] text-muted-foreground' />
+                                <span className='text-sm text-muted-foreground'>{`${article.comments.length} comments`}</span>
+                              </div>
+                            )}
+                          </div>
+                          <ChevronRightIcon className='ml-2' />
+                        </Button>
+                      </Link>
                     )}
                   </div>
                 </CardFooter>
               </Card>
-            </Link>
-          ))}
-        </div>
-        <Button
-          variant='outline'
-          className='mt-4 w-full'
-          disabled={!hasNextPage || isFetchingNextPage}
-          onClick={() => fetchNextPage()}
-        >
-          {isFetchingNextPage
-            ? 'Loading more...'
-            : hasNextPage
-              ? 'Load More'
-              : 'Nothing more to load'}
-        </Button>
-      </>
-    )
-  }
+            ))}
+          </div>
+          <Button
+            className='mt-4 w-full'
+            disabled={!hasNextPage || isFetchingNextPage}
+            onClick={() => fetchNextPage()}
+          >
+            {isFetchingNextPage
+              ? 'Loading more...'
+              : hasNextPage
+                ? 'Load More'
+                : 'Nothing more to load'}
+          </Button>
+        </>
+      )}
+    </>
+  )
 }
