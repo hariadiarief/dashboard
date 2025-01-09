@@ -1,5 +1,7 @@
 import axios from 'axios'
 
+import { toast } from '@/hooks/use-toast'
+
 export const API = axios.create({
   baseURL: import.meta.env.VITE_BASE_API_URL,
   headers: {
@@ -25,7 +27,14 @@ API.interceptors.response.use(
   response => response.data,
   error => {
     console.log('Logging the error', error)
-
+    toast({
+      title: 'Opps, something wrong',
+      description: (
+        <pre className='mt-2 w-[340px] rounded-md bg-destructive p-4 text-white'>
+          {error.message}
+        </pre>
+      )
+    })
     // toast
 
     return Promise.reject(error)
