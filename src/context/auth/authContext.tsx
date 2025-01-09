@@ -24,17 +24,14 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
   const [state, dispatch] = useReducer(reducer, initialState)
 
   useEffect(() => {
-    const auth = localStorage.getItem('token') || ''
+    const authInfo = JSON.parse(localStorage.getItem('auth') || '{}')
 
-    const payload = {
-      token: auth
+    if (Object.keys(authInfo).length !== 0) {
+      dispatch({
+        type: 'auth-check',
+        payload: authInfo
+      })
     }
-
-    console.log({ payload })
-    dispatch({
-      type: 'auth-check',
-      payload
-    })
 
     setisLoading(false)
   }, [])

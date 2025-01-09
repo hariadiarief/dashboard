@@ -5,8 +5,8 @@ import { type SidebarData } from '../types'
 
 export const sidebarData: SidebarData = {
   user: {
-    name: 'hariadiarief',
-    email: 'hariadiarief@gmail.com',
+    name: 'username',
+    email: 'user@gmail.com',
     avatar: '/avatars/shadcn.jpg'
   },
   app: {

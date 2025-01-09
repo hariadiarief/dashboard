@@ -2,22 +2,20 @@ import { IActionAuth, IStateAuth } from './authTypes'
 
 export const initialState: IStateAuth = {
   isAuthenticated: false,
-  token: null
+  authInfo: undefined
 }
 
 export const reducer = (state: IStateAuth, action: IActionAuth): IStateAuth => {
   switch (action.type) {
     case 'login':
       return {
-        isAuthenticated: !!action.payload.token,
-        token: action.payload.token
+        isAuthenticated: !!action.payload,
+        authInfo: action.payload
       }
     case 'auth-check':
-      console.log('auth-check', !!action.payload.token)
-
       return {
-        isAuthenticated: !!action.payload.token,
-        token: action.payload.token
+        isAuthenticated: !!action.payload,
+        authInfo: action.payload
       }
     case 'logout':
       localStorage.clear()

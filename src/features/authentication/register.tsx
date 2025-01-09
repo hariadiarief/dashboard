@@ -20,7 +20,7 @@ export default function Register() {
       navigate('/login')
     },
     onError: error => {
-      console.error('Login gagal:', error)
+      console.error('Register gagal:', error)
     }
   })
 

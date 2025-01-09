@@ -7,9 +7,18 @@ import {
   SidebarHeader,
   SidebarRail
 } from '@/components/ui/sidebar'
+import { useAuth } from '@/context/auth/authContext'
 import { sidebarData } from './data/sidebar-data'
 
 export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
+  const { state: authState } = useAuth()
+
+  const userInfo = {
+    ...sidebarData.user,
+    email: authState.authInfo?.user.email || sidebarData.user.email,
+    name: authState.authInfo?.user.username || sidebarData.user.name
+  }
+
   return (
     <Sidebar collapsible='icon' variant='floating' {...props}>
       <SidebarHeader>
@@ -31,7 +40,7 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
         ))}
       </SidebarContent>
       <SidebarFooter>
-        <NavUser user={sidebarData.user} />
+        <NavUser user={userInfo} />
       </SidebarFooter>
       <SidebarRail />
     </Sidebar>

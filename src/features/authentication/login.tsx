@@ -22,8 +22,17 @@ export default function Login() {
   >({
     mutationFn: login,
     onSuccess: data => {
-      localStorage.setItem('token', data.jwt)
-      dispatch({ type: 'login', payload: { token: data.jwt } })
+      const payload = {
+        token: data.jwt,
+        user: {
+          username: data.user.username,
+          email: data.user.email
+        }
+      }
+
+      localStorage.setItem('auth', JSON.stringify(payload))
+
+      dispatch({ type: 'login', payload })
       navigate('/')
     },
     onError: error => {

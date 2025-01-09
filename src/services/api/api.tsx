@@ -9,9 +9,10 @@ export const API = axios.create({
 
 API.interceptors.request.use(
   config => {
-    const auth = JSON.parse(localStorage.getItem('auth') || '{}')
+    const authInfo = JSON.parse(localStorage.getItem('auth') || '{}')
 
-    if (auth.token) config.headers.Authorization = `Bearer ${auth.token}`
+    if (authInfo.token)
+      config.headers.Authorization = `Bearer ${authInfo.token}`
 
     return config
   },

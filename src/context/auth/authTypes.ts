@@ -1,14 +1,24 @@
 export interface IStateAuth {
   isAuthenticated: boolean
-  token: string | null
+  authInfo?: {
+    token: string
+    user: IAuthUser
+  }
 }
 export type IActionAuth = IActionLogin | IActionLogout
 
 export interface IActionLogin {
   type: 'login' | 'auth-check'
-  payload: {
-    token: string
-  }
+  payload: IAuthPayload
+}
+
+export interface IAuthPayload {
+  token: string
+  user: IAuthUser
+}
+export interface IAuthUser {
+  email: string
+  username: string
 }
 
 export interface IActionLogout {

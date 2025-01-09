@@ -22,7 +22,7 @@ export interface IRegisterPayload {
 
 export const login = async (
   payload: ILoginPayload
-): Promise<ILoginResponse> => {
+): Promise<AxiosResponse<ILoginResponse>> => {
   return await API.post('/api/auth/local', payload)
 }
 
