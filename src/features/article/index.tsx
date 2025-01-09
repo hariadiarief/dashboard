@@ -50,7 +50,7 @@ export default function Article() {
         <div className='grid grid-cols-[repeat(auto-fill,_minmax(288px,_1fr))] gap-4'>
           {articles.map((article, index) => (
             <Link
-              to={article.documentId}
+              to={`/article/edit/${article.documentId}`}
               className='h-full w-full'
               key={article.documentId + index}
             >

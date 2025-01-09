@@ -2,7 +2,7 @@ import { BrowserRouter, useRoutes } from 'react-router'
 
 import { useAuth } from './context/auth/authContext'
 import Article from './features/article'
-import DetailArticle from './features/article/detail'
+import EditArticle from './features/article/edit'
 import Login from './features/authentication/login'
 import Register from './features/authentication/register'
 import Dashboard from './features/dashboard'
@@ -23,8 +23,8 @@ const PrivateRoutes = () =>
           element: <Article />
         },
         {
-          path: '/article/:id',
-          element: <DetailArticle />
+          path: '/article/edit/:id',
+          element: <EditArticle />
         }
       ]
     }

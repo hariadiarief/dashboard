@@ -14,32 +14,36 @@ export interface IGetArticleParams {
   populate?: string | number
 }
 
+export interface IMetaPagination {
+  page: number
+  pageSize: number
+  pageCount: number
+  total: number
+}
+
+export interface IArticle {
+  id: number
+  documentId: string
+  title: string
+  description: string
+  cover_image_url: string
+  createdAt: string
+  updatedAt: string
+  publishedAt: string
+}
+export interface IComment {
+  content: string
+  createdAt: string
+  documentId: string
+  id: number
+  publishedAt: string
+  updatedAt: string
+}
+
 export interface IGetArticleResponse {
-  data: {
-    comments: {
-      content: string
-      createdAt: string
-      documentId: string
-      id: number
-      publishedAt: string
-      updatedAt: string
-    }[]
-    id: boolean
-    documentId: string
-    title: string
-    description: string
-    cover_image_url: string
-    createdAt: string
-    updatedAt: string
-    publishedAt: string
-  }[]
+  data: IArticle & { comments: IComment[] }
   meta: {
-    pagination: {
-      page: number
-      pageSize: number
-      pageCount: number
-      total: number
-    }
+    pagination: IMetaPagination
   }
 }
 
