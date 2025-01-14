@@ -15,7 +15,6 @@ import {
 } from '@/components/ui/sidebar'
 import { useAuth } from '@/context/auth/authContext'
 import { ChevronsUpDown, LogOut } from 'lucide-react'
-import { useNavigate } from 'react-router'
 
 export function NavUser({
   user
@@ -27,7 +26,6 @@ export function NavUser({
   }
 }) {
   const { isMobile } = useSidebar()
-  const navigate = useNavigate()
   const { dispatch } = useAuth()
 
   return (
@@ -69,12 +67,7 @@ export function NavUser({
               </div>
             </DropdownMenuLabel>
             <DropdownMenuSeparator />
-            <DropdownMenuItem
-              onClick={() => {
-                dispatch({ type: 'logout' })
-                navigate('/login')
-              }}
-            >
+            <DropdownMenuItem onClick={() => dispatch({ type: 'logout' })}>
               <LogOut />
               Log out
             </DropdownMenuItem>

@@ -17,7 +17,7 @@ export default function Register() {
   const registerMutation = useMutation<AxiosResponse, Error, IRegisterPayload>({
     mutationFn: register,
     onSuccess: () => {
-      navigate('/login')
+      navigate('/')
     },
     onError: error => {
       console.error('Register gagal:', error)

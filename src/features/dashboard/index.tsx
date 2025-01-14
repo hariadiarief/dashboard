@@ -1,4 +1,5 @@
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
+import { useEffect } from 'react'
 import { Bar, BarChart, ResponsiveContainer, XAxis, YAxis } from 'recharts'
 
 const data = [
@@ -53,6 +54,10 @@ const data = [
 ]
 
 export default function Dashboard() {
+  useEffect(() => {
+    console.log('render :Dashboard')
+  }, [])
+
   return (
     <div className=''>
       <h3 className='mb-4 text-2xl'>Statistics</h3>

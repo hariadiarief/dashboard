@@ -1,18 +1,10 @@
 'use client'
 
-import React, {
-  ReactNode,
-  createContext,
-  useContext,
-  useEffect,
-  useReducer,
-  useState
-} from 'react'
+import React, { ReactNode, createContext, useContext, useReducer } from 'react'
 import { initialState, reducer } from './authReducer'
 import { IActionAuth, IStateAuth } from './authTypes'
 
 interface ContextProps {
-  isLoading: boolean
   state: IStateAuth
   dispatch: React.Dispatch<IActionAuth>
 }
@@ -20,24 +12,10 @@ interface ContextProps {
 const AuthContext = createContext<ContextProps | undefined>(undefined)
 
 export const AuthProvider = ({ children }: { children: ReactNode }) => {
-  const [isLoading, setisLoading] = useState(true)
   const [state, dispatch] = useReducer(reducer, initialState)
 
-  useEffect(() => {
-    const authInfo = JSON.parse(localStorage.getItem('auth') || '{}')
-
-    if (Object.keys(authInfo).length !== 0) {
-      dispatch({
-        type: 'auth-check',
-        payload: authInfo
-      })
-    }
-
-    setisLoading(false)
-  }, [])
-
   return (
-    <AuthContext.Provider value={{ isLoading, state, dispatch }}>
+    <AuthContext.Provider value={{ state, dispatch }}>
       {children}
     </AuthContext.Provider>
   )

@@ -1,6 +1,7 @@
-import { BrowserRouter, useRoutes } from 'react-router'
+import { Navigate, useRoutes } from 'react-router'
 
 import { useAuth } from './context/auth/authContext'
+import PageNotFound from './features/404'
 import Article from './features/article'
 import CreateArticle from './features/article/create'
 import DetailArticle from './features/article/detail'
@@ -10,8 +11,10 @@ import Register from './features/authentication/register'
 import Dashboard from './features/dashboard'
 import Layout from './features/layout'
 
-const PrivateRoutes = () =>
-  useRoutes([
+export default function RoutesApp() {
+  const { state: authState } = useAuth()
+
+  const privateRoutes = [
     {
       path: '/',
       element: <Layout />,
@@ -35,45 +38,24 @@ const PrivateRoutes = () =>
         {
           path: '/article/edit/:id',
           element: <EditArticle />
-        }
+        },
+        { path: '*', element: <PageNotFound /> }
       ]
-    }
-  ])
+    },
+    { path: '/register', element: <Navigate to='/' replace /> }
+  ]
 
-const PublicRoutes = () =>
-  useRoutes([
+  const publicRoutes = [
     {
       path: '/',
       element: <Login />
     },
     {
-      path: '/login',
-      element: <Login />
-    },
-    {
       path: '/register',
       element: <Register />
-    }
-  ])
+    },
+    { path: '*', element: <Navigate to='/' replace /> }
+  ]
 
-export default function RoutesApp() {
-  const { state: authState, isLoading } = useAuth()
-
-  if (isLoading) {
-    return <div>Loading...</div>
-  } else {
-    if (authState.isAuthenticated) {
-      return (
-        <BrowserRouter>
-          <PrivateRoutes />
-        </BrowserRouter>
-      )
-    } else {
-      return (
-        <BrowserRouter>
-          <PublicRoutes />
-        </BrowserRouter>
-      )
-    }
-  }
+  return useRoutes(authState.isAuthenticated ? privateRoutes : publicRoutes)
 }

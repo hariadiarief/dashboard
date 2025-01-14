@@ -28,9 +28,7 @@ export default function Article() {
         'pagination[page]': 1,
         'populate[comments][populate][user]': '*'
       },
-      getNextPageParam: (lastPage, pages, lastPageParam) => {
-        console.log({ lastPage, pages, lastPageParam })
-
+      getNextPageParam: (lastPage, pages) => {
         return lastPage.meta.pagination.pageCount > pages.length
           ? {
               'pagination[page]': pages.length + 1,
@@ -46,8 +44,8 @@ export default function Article() {
   }, [data])
 
   useEffect(() => {
-    console.log({ articles, data })
-  }, [articles, data])
+    console.log('render :Article')
+  }, [])
 
   if (isPending) {
     return <div>Loading...</div>

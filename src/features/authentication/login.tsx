@@ -6,11 +6,10 @@ import { useAuth } from '@/context/auth/authContext'
 import { ILoginPayload, ILoginResponse, login } from '@/services/api/auth'
 import { useMutation } from '@tanstack/react-query'
 import { useState } from 'react'
-import { Link, useNavigate } from 'react-router'
+import { Link } from 'react-router'
 
 export default function Login() {
   const { dispatch } = useAuth()
-  const navigate = useNavigate()
 
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
@@ -33,7 +32,6 @@ export default function Login() {
       localStorage.setItem('auth', JSON.stringify(payload))
 
       dispatch({ type: 'login', payload })
-      navigate('/')
     },
     onError: error => {
       console.error('Login gagal:', error)

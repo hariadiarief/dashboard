@@ -1,8 +1,13 @@
 import { IActionAuth, IStateAuth } from './authTypes'
 
+const authInfoLocalStorage = JSON.parse(localStorage.getItem('auth') || '{}')
+
 export const initialState: IStateAuth = {
-  isAuthenticated: false,
-  authInfo: undefined
+  isAuthenticated: Object.keys(authInfoLocalStorage).length > 0,
+  authInfo:
+    Object.keys(authInfoLocalStorage).length !== 0
+      ? authInfoLocalStorage
+      : undefined
 }
 
 export const reducer = (state: IStateAuth, action: IActionAuth): IStateAuth => {
@@ -12,14 +17,12 @@ export const reducer = (state: IStateAuth, action: IActionAuth): IStateAuth => {
         isAuthenticated: !!action.payload,
         authInfo: action.payload
       }
-    case 'auth-check':
-      return {
-        isAuthenticated: !!action.payload,
-        authInfo: action.payload
-      }
     case 'logout':
       localStorage.clear()
-      return initialState
+      return {
+        isAuthenticated: false,
+        authInfo: undefined
+      }
     default:
       return state
   }

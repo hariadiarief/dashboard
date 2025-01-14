@@ -23,8 +23,6 @@ export default function DetailArticle() {
     queryFn: () => getArticlebyID(id)
   })
 
-  console.log({ comments })
-
   const article = data?.data || []
   if (isPending) {
     return <div>Loading...</div>
