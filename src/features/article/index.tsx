@@ -70,7 +70,10 @@ export default function Article() {
         <>
           <div className='grid grid-cols-[repeat(auto-fill,_minmax(288px,_1fr))] gap-4'>
             {articles.map((article, index) => (
-              <Card className='flex h-full w-full flex-col'>
+              <Card
+                key={article.documentId}
+                className='flex h-full w-full flex-col'
+              >
                 <CardHeader>
                   <CardTitle>{article.title}</CardTitle>
                   <CardDescription>{article.description}</CardDescription>

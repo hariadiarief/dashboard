@@ -73,7 +73,7 @@ export default function Register() {
           </CardContent>
           <CardFooter className='flex flex-col space-y-4'>
             <Button type='submit' className='w-full'>
-              Register
+              {registerMutation.isPending ? 'Loading' : 'Register'}
             </Button>
             <p className='text-center text-sm'>
               Already have an account?{' '}
